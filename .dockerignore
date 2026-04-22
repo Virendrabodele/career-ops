@@ -1,0 +1,17 @@
+.git
+.github
+.claude
+.opencode
+node_modules
+.render-data
+cv.md
+article-digest.md
+config/profile.yml
+portals.yml
+reports
+output
+data
+jds
+batch/logs
+batch/tracker-additions
+npm-debug.log

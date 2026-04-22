@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Career Ops</title>
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Render-ready control panel</p>
+          <h1>Career Ops</h1>
+          <p class="lede">
+            Hosted wrapper around the existing scanner, tracker, report, and PDF scripts.
+          </p>
+        </div>
+        <button id="refreshButton" class="button secondary" type="button">Refresh</button>
+      </header>
+
+      <section class="grid cards" id="overviewCards"></section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Setup</p>
+            <h2>Editable Files</h2>
+          </div>
+          <p class="panel-meta" id="storageMeta"></p>
+        </div>
+        <div class="editor-grid" id="editors"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Automation</p>
+            <h2>Actions</h2>
+          </div>
+          <p class="panel-meta">Run existing maintenance scripts from the browser.</p>
+        </div>
+        <div class="actions-grid" id="actions"></div>
+        <pre class="log-output" id="actionOutput">No action has been run yet.</pre>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Pipeline</p>
+            <h2>Applications</h2>
+          </div>
+          <p class="panel-meta">Most recent 100 tracked applications.</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Company</th>
+                <th>Role</th>
+                <th>Score</th>
+                <th>Status</th>
+                <th>Report</th>
+              </tr>
+            </thead>
+            <tbody id="applicationsTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Artifacts</p>
+            <h2>Reports and PDFs</h2>
+          </div>
+        </div>
+        <div class="files-grid">
+          <div>
+            <h3>Reports</h3>
+            <ul class="file-list" id="reportsList"></ul>
+          </div>
+          <div>
+            <h3>PDF Output</h3>
+            <ul class="file-list" id="outputsList"></ul>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <template id="editorTemplate">
+      <article class="editor-card">
+        <div class="editor-head">
+          <div>
+            <h3></h3>
+            <p></p>
+          </div>
+          <button class="button" type="button">Save</button>
+        </div>
+        <textarea spellcheck="false"></textarea>
+      </article>
+    </template>
+
+    <script type="module" src="/assets/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: career-ops
+    runtime: docker
+    plan: starter
+    region: oregon
+    autoDeployTrigger: commit
+    healthCheckPath: /health
+    disk:
+      name: career-ops-data
+      mountPath: /var/data/career-ops
+      sizeGB: 10
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: CAREER_OPS_DATA_ROOT
+        value: /var/data/career-ops
+      - key: BASIC_AUTH_USERNAME
+        sync: false
+      - key: BASIC_AUTH_PASSWORD
+        sync: false

@@ -14,7 +14,9 @@
     "update": "node update-system.mjs apply",
     "rollback": "node update-system.mjs rollback",
     "liveness": "node check-liveness.mjs",
-    "scan": "node scan.mjs"
+    "scan": "node scan.mjs",
+    "web": "node web/server.mjs",
+    "start": "node web/server.mjs"
   },
   "keywords": [
     "ai",
