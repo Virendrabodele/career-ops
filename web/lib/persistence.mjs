@@ -26,6 +26,10 @@ Add your full CV here in markdown.
 
 Optional proof points, case studies, portfolio summaries, and public metrics go here.
 `,
+  'jds/current-jd.md': `# Current Job Description
+
+Paste the latest job description here when you want to compare your resume against one target role.
+`,
   'data/applications.md': `# Applications
 
 | # | Date | Company | Role | Score | Status | PDF | Report | Notes |
@@ -50,6 +54,14 @@ const seededFromRepo = {
 
 async function ensureDirectory(dirPath) {
   await fs.mkdir(dirPath, { recursive: true });
+}
+
+let storageQueue = Promise.resolve();
+
+function withStorageLock(task) {
+  const nextRun = storageQueue.then(task, task);
+  storageQueue = nextRun.catch(() => {});
+  return nextRun;
 }
 
 async function pathExists(targetPath) {
@@ -111,7 +123,7 @@ async function seedFromRepo(relPath, sourceRelPath) {
   await copyIfExists(sourcePath, targetPath);
 }
 
-export async function initializePersistentStorage() {
+async function initializePersistentStorageUnlocked() {
   await ensureDirectory(persistentRoot);
 
   for (const item of managedItems) {
@@ -132,58 +144,74 @@ export async function initializePersistentStorage() {
   }
 }
 
-export async function syncPersistentToWorkspace() {
-  await initializePersistentStorage();
+export async function initializePersistentStorage() {
+  return withStorageLock(() => initializePersistentStorageUnlocked());
+}
+
+async function syncPersistentToWorkspaceUnlocked() {
+  await initializePersistentStorageUnlocked();
 
   for (const item of managedItems) {
     await copyIfExists(resolvePersistentPath(item.relPath), resolveRepoPath(item.relPath));
   }
 }
 
-export async function syncWorkspaceToPersistent() {
-  await initializePersistentStorage();
+export async function syncPersistentToWorkspace() {
+  return withStorageLock(() => syncPersistentToWorkspaceUnlocked());
+}
+
+async function syncWorkspaceToPersistentUnlocked() {
+  await initializePersistentStorageUnlocked();
 
   for (const item of managedItems) {
     await copyIfExists(resolveRepoPath(item.relPath), resolvePersistentPath(item.relPath));
   }
 }
 
+export async function syncWorkspaceToPersistent() {
+  return withStorageLock(() => syncWorkspaceToPersistentUnlocked());
+}
+
 export async function readEditableFile(fileKey) {
-  const file = editableFiles[fileKey];
-  if (!file) {
-    return null;
-  }
+  return withStorageLock(async () => {
+    const file = editableFiles[fileKey];
+    if (!file) {
+      return null;
+    }
 
-  await syncPersistentToWorkspace();
-  const filePath = resolveRepoPath(file.relPath);
-  const content = await fs.readFile(filePath, 'utf8');
+    await syncPersistentToWorkspaceUnlocked();
+    const filePath = resolveRepoPath(file.relPath);
+    const content = await fs.readFile(filePath, 'utf8');
 
-  return {
-    ...file,
-    key: fileKey,
-    content,
-  };
+    return {
+      ...file,
+      key: fileKey,
+      content,
+    };
+  });
 }
 
 export async function writeEditableFile(fileKey, content) {
-  const file = editableFiles[fileKey];
-  if (!file) {
-    throw new Error(`Unknown editable file: ${fileKey}`);
-  }
+  return withStorageLock(async () => {
+    const file = editableFiles[fileKey];
+    if (!file) {
+      throw new Error(`Unknown editable file: ${fileKey}`);
+    }
 
-  const workspacePath = resolveRepoPath(file.relPath);
-  const persistentPath = resolvePersistentPath(file.relPath);
+    const workspacePath = resolveRepoPath(file.relPath);
+    const persistentPath = resolvePersistentPath(file.relPath);
 
-  await ensureDirectory(path.dirname(workspacePath));
-  await ensureDirectory(path.dirname(persistentPath));
-  await fs.writeFile(workspacePath, content, 'utf8');
-  await fs.writeFile(persistentPath, content, 'utf8');
+    await ensureDirectory(path.dirname(workspacePath));
+    await ensureDirectory(path.dirname(persistentPath));
+    await fs.writeFile(workspacePath, content, 'utf8');
+    await fs.writeFile(persistentPath, content, 'utf8');
 
-  return {
-    ...file,
-    key: fileKey,
-    bytes: Buffer.byteLength(content, 'utf8'),
-  };
+    return {
+      ...file,
+      key: fileKey,
+      bytes: Buffer.byteLength(content, 'utf8'),
+    };
+  });
 }
 
 export async function resolveDownloadFile(collectionKey, fileName) {
@@ -206,17 +234,19 @@ export async function resolveDownloadFile(collectionKey, fileName) {
 }
 
 export async function getStorageSnapshot() {
-  await syncPersistentToWorkspace();
+  return withStorageLock(async () => {
+    await syncPersistentToWorkspaceUnlocked();
 
-  const snapshot = {};
-  for (const item of managedItems) {
-    const targetPath = resolvePersistentPath(item.relPath);
-    snapshot[item.relPath] = await pathExists(targetPath);
-  }
+    const snapshot = {};
+    for (const item of managedItems) {
+      const targetPath = resolvePersistentPath(item.relPath);
+      snapshot[item.relPath] = await pathExists(targetPath);
+    }
 
-  return {
-    repoRoot,
-    persistentRoot,
-    snapshot,
-  };
+    return {
+      repoRoot,
+      persistentRoot,
+      snapshot,
+    };
+  });
 }

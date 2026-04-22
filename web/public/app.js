@@ -86,6 +86,7 @@ function renderEditors(fileMap, setupChecks) {
   for (const [key, label] of Object.entries({
     profile: 'Profile',
     cv: 'CV',
+    jd: 'Current JD',
     portals: 'Portals',
     articleDigest: 'Article Digest',
   })) {
@@ -203,20 +204,12 @@ function renderActions(state) {
   }
 }
 
-async function loadEditorFiles() {
-  const keys = ['profile', 'cv', 'portals', 'articleDigest'];
-  const entries = await Promise.all(
-    keys.map(async key => [key, await requestJson(`/api/files/${key}`)]),
-  );
-  return Object.fromEntries(entries);
-}
-
 async function loadState() {
   refreshButton.disabled = true;
   try {
-    const [state, fileMap] = await Promise.all([requestJson('/api/state'), loadEditorFiles()]);
+    const state = await requestJson('/api/state');
     renderOverview(state);
-    renderEditors(fileMap, state.setupChecks);
+    renderEditors(state.editableFiles || {}, state.setupChecks);
     renderApplications(state);
     renderFiles(reportsList, state.reports, 'reports');
     renderFiles(outputsList, state.outputs, 'output');

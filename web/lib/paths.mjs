@@ -16,6 +16,7 @@ export const managedItems = [
   { type: 'file', relPath: 'article-digest.md' },
   { type: 'file', relPath: 'config/profile.yml' },
   { type: 'file', relPath: 'portals.yml' },
+  { type: 'file', relPath: 'jds/current-jd.md' },
   { type: 'file', relPath: 'batch/batch-input.tsv' },
   { type: 'file', relPath: 'batch/batch-state.tsv' },
   { type: 'dir', relPath: 'data' },
@@ -47,6 +48,11 @@ export const editableFiles = {
     label: 'Portals',
     relPath: 'portals.yml',
     language: 'yaml',
+  },
+  jd: {
+    label: 'Current JD',
+    relPath: 'jds/current-jd.md',
+    language: 'markdown',
   },
 };
 

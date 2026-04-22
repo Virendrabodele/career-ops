@@ -17,6 +17,15 @@ import { loadAppState } from './lib/state.mjs';
 const host = '0.0.0.0';
 const port = Number(process.env.PORT || 10000);
 
+const rawEditableAliases = {
+  resume: 'cv',
+  cv: 'cv',
+  jd: 'jd',
+  job: 'jd',
+  profile: 'profile',
+  portals: 'portals',
+};
+
 const staticFiles = {
   '/': { type: 'text/html; charset=utf-8', fileName: 'index.html' },
   '/assets/app.js': { type: 'application/javascript; charset=utf-8', fileName: 'app.js' },
@@ -133,6 +142,37 @@ async function handleApiRequest(request, response, url) {
     }
     sendJson(response, 200, file);
     return;
+  }
+
+  if (url.pathname.startsWith('/api/raw/')) {
+    const alias = url.pathname.split('/').pop();
+    const fileKey = rawEditableAliases[alias];
+    if (!fileKey) {
+      sendJson(response, 404, { error: 'Unknown raw file alias' });
+      return;
+    }
+
+    if (request.method === 'GET') {
+      const file = await readEditableFile(fileKey);
+      if (!file) {
+        sendJson(response, 404, { error: 'Unknown file' });
+        return;
+      }
+
+      response.writeHead(200, {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Cache-Control': 'no-store',
+      });
+      response.end(file.content);
+      return;
+    }
+
+    if (request.method === 'PUT') {
+      const rawBody = await readRequestBody(request);
+      await writeEditableFile(fileKey, rawBody);
+      sendJson(response, 200, { ok: true, fileKey });
+      return;
+    }
   }
 
   if (request.method === 'PUT' && url.pathname.startsWith('/api/files/')) {

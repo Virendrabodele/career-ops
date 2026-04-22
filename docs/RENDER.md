@@ -52,6 +52,7 @@ Then update these files in the browser UI:
 
 - `config/profile.yml`
 - `cv.md`
+- `jds/current-jd.md`
 - `portals.yml`
 - `article-digest.md` (optional)
 
@@ -60,6 +61,33 @@ After saving them, use the Actions panel to run:
 1. `Doctor`
 2. `Verify Pipeline`
 3. `Scan Portals` when you are ready
+
+## Curl updates
+
+You can also update key files directly with `curl`.
+
+Resume:
+
+```bash
+curl -X PUT "$APP_URL/api/raw/resume" \
+  -u "$BASIC_AUTH_USERNAME:$BASIC_AUTH_PASSWORD" \
+  --data-binary @cv.md
+```
+
+Current JD:
+
+```bash
+curl -X PUT "$APP_URL/api/raw/jd" \
+  -u "$BASIC_AUTH_USERNAME:$BASIC_AUTH_PASSWORD" \
+  --data-binary @job-description.md
+```
+
+Read them back:
+
+```bash
+curl -u "$BASIC_AUTH_USERNAME:$BASIC_AUTH_PASSWORD" "$APP_URL/api/raw/resume"
+curl -u "$BASIC_AUTH_USERNAME:$BASIC_AUTH_PASSWORD" "$APP_URL/api/raw/jd"
+```
 
 ## Important tradeoffs
 

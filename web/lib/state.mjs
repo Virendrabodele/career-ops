@@ -7,7 +7,7 @@ import {
   repoRoot,
   resolveRepoPath,
 } from './paths.mjs';
-import { syncPersistentToWorkspace } from './persistence.mjs';
+import { readEditableFile, syncPersistentToWorkspace } from './persistence.mjs';
 
 const SCORE_REGEX = /(\d+\.?\d*)\/5/;
 const REPORT_REGEX = /\[(\d+)\]\(([^)]+)\)/;
@@ -182,6 +182,10 @@ export async function loadAppState(actionsState) {
     }),
   );
 
+  const editableFileEntries = await Promise.all(
+    Object.keys(editableFiles).map(async key => [key, await readEditableFile(key)]),
+  );
+
   return {
     environment: {
       render: process.env.RENDER === 'true' || process.env.RENDER === '1',
@@ -190,6 +194,7 @@ export async function loadAppState(actionsState) {
       persistentRoot,
     },
     setupChecks,
+    editableFiles: Object.fromEntries(editableFileEntries),
     overview,
     actions: actionsState,
     applications: applications.slice(0, 100),
