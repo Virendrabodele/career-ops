@@ -4,13 +4,13 @@
 
 candidate:
   full_name: "Virendra Bodele"
-  email: "Virendra.d@nsbindia.org"
-  phone: "+91 9922232785"
+  email: "virendra.d@nsbindia.org"
+  phone: "9922232785"
   location: "Bangalore"
-  linkedin: "https://linkedin.com/in/virendrabodele/"
-  portfolio_url: ""
+  linkedin: "linkedin.com/in/virendrabodele"
+  portfolio_url: "NA"
   github: "github.com/Virendrabodele"
-  twitter: ""
+  twitter: "NA"
   # (Optional) Canva resume design ID for visual CV generation via /career-ops pdf.
   # Find it in your Canva design URL: https://www.canva.com/design/DAxxxxxxx/...
   # The ID starts with "D" and is 11 characters long.
@@ -19,53 +19,57 @@ candidate:
 target_roles:
   # Your North Star roles — what you're optimizing for
   primary:
-    - "Senior AI Engineer"
-    - "Staff ML Engineer"
+    - "Operations Team Member"
+    - "Customer Service Manager"
+    - "Account Manager"
+    - "SaaS Onboarding"
+    - "SaaS Serviceing"
+    - "Tech Support"
   # Archetypes help the evaluation system score fit
   archetypes:
-    - name: "AI/ML Engineer"
-      level: "Senior/Staff"
+    - name: "Operations Manager"
+      level: "Manager"
       fit: "primary"        # primary = dream role, secondary = good fit, adjacent = stretch
-    - name: "AI Product Manager"
-      level: "Senior"
+    - name: "Account Executive"
+      level: "Mid-Senior"
       fit: "secondary"
-    - name: "Solutions Architect"
+    - name: "SaaS Onboarding and Serviceing"
       level: "Mid-Senior"
       fit: "adjacent"
 
 narrative:
   # Your professional headline (1 line)
-  headline: "ML Engineer turned AI product builder"
+  headline: "Finance and Operations professional with 7+ years of experience spanning financial accounting and SOP-driven process management."
   # Your exit story — what makes you unique
-  exit_story: "Built and sold my SaaS after 5 years. Now focused on applied AI at scale."
+  exit_story: "MBA (Finance) from Bangalore University with a proven track record in implementing structured financial controls, reducing processing errors, and improving compliance rates in high-volume environments. I specialize in automating workflows using Python, SQL, Power BI, and n8n."
   # Your top 3-5 superpowers
   superpowers:
-    - "End-to-end ML pipelines"
-    - "Fast prototyping (idea to prod in 2 weeks)"
-    - "Cross-functional communication"
+    - "Financial Accounting, Accounts Payable, and Reconciliation"
+    - "Process automation using Python, SQL, Power BI, and n8n Automation"
+    - "Stakeholder Management and Cross-functional Collaboration"
+    - "SOP Development and SOX-aligned Internal Controls"
   # Proof points — projects, articles, case studies with measurable impact
   proof_points:
-    - name: "Project Alpha"
-      url: "https://janesmith.dev/project-alpha"
-      hero_metric: "Reduced inference latency 40%"
-    - name: "Open Source Tool"
-      url: "https://github.com/janesmith/tool"
-      hero_metric: "2K+ GitHub stars"
-  # Optional: dashboard/demo URL with credentials
-  # dashboard:
-  #   url: "https://janesmith.dev/demo"
-  #   password: "demo-2026"
+    - name: "Accounts Payable Optimization"
+      url: "NA"
+      hero_metric: "Processed 5,000+ invoices within tight deadlines, achieving a 93% reduction in late payment fees [cite: 18]"
+    - name: "PDF to Excel – Automated Financial Document Digitization"
+      url: "github.com/Nobrokerhood/pdftoexcel"
+      hero_metric: "Processed 40+ concurrent requests with 99% extraction accuracy, reducing manual data entry effort by 60%"
+    - name: "Finance SOP Implementation"
+      url: "NA"
+      hero_metric: "Achieved a 38% reduction in processing errors and 70% improvement in compliance accuracy"
 
 compensation:
-  target_range: "$150K-200K"     # Your target total comp
-  currency: "USD"
-  minimum: "$120K"               # Walk-away number
-  location_flexibility: "Remote preferred, 1 week/month on-site possible"
+  target_range: "₹15,00,000 - ₹25,00,000"      # Your target total comp (Estimated placeholder based on location)
+  currency: "INR"
+  minimum: "₹12,00,000"                # Walk-away number (Estimated placeholder based on location)
+  location_flexibility: "Bangalore, On-site / Hybrid preferred"
 
 location:
-  country: "United States"
-  city: "San Francisco"
-  timezone: "PST"
-  visa_status: "No sponsorship needed"
+  country: "India"
+  city: "Bangalore"
+  timezone: "IST"
+  visa_status: "No sponsorship needed / Authorized to work"
   # For remote roles outside your country:
   # onsite_availability: "1 week/month in any city"
